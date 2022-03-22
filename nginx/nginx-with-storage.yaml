@@ -83,7 +83,7 @@ metadata:
   name: nginx-service
 spec:
   selector:
-    app: web-nginx
+    app: nginx-storage
   type: LoadBalancer
   ports:
   - port: 80
