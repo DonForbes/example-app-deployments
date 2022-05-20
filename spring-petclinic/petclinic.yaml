@@ -1,0 +1,35 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: spring-petclinic
+spec:
+  selector:
+    matchLabels:
+      app: spring-petclinic
+  replicas: 1 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: spring-petclinic
+    spec:
+      containers:
+      - name: spring-petclinic
+        image: harbor.donaldforbes.com/apps/tbs/petclinic
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: image-repo-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: petclinic-service
+spec:
+  selector:
+    app: spring-petclinic
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
